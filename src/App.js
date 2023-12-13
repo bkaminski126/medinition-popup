@@ -1,56 +1,22 @@
 import "./index.css";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useLayoutEffect } from "react";
 import OpenAI from "openai";
-import { useCookies } from "react-cookie";
 import Medinition from "./components/Medinition";
+import Highlighter from "./components/Highlighter";
 
 function App() {
-  const [response, setResponse] = useState('');
-  const [lang, setLang] = useState(null);
-  const [loading, setLoading] = useState(false);
   const [sel, setSel] = useState("");
-  const openai = new OpenAI({
-    apiKey: process.env["REACT_APP_OPENAI_API_KEY"],
-    dangerouslyAllowBrowser: true,
-  });
-
-  function checkSel() {
-    let val = sel.toString();
-    async function main(val) {
-      setLoading(true);
-      openai.chat.completions
-        .create({
-          messages: [
-            {
-              role: "system",
-              content:
-                `You are an assistant that defines health-related words for potential patients. 
-                Give a definition of the term provided in relatively simple English, in less than 50 words.
-                If the term is not related to health, say 'N/A'. 
-                Write the definition, and only the definition, without rewriting the word first. Term: 
-                ` + val.slice(0, 50).trim(),
-            },
-          ],
-          model: "gpt-3.5-turbo",
-        })
-        .then((r) => {
-          setResponse(r["choices"]["0"]["message"]["content"]);
-          setLoading(false);
-        });
-    }
-    setSel(window.getSelection());
-    main(val);
-  }
-
   useEffect(() => {
-    window.addEventListener("mouseup", checkSel);
+    const saveSelection = () => {
+      setSel(window.getSelection().toString());
+    };
+    document.addEventListener("mouseup", saveSelection);
+    return () => document.removeEventListener("mouseup", saveSelection);
   }, []);
 
   return (
     <div className="App m-5">
-      {sel !== "" && !sel.isCollapsed && (
-        <Medinition sel={sel} response={response} loading={loading} />
-      )}
+      {sel && sel !== "" && !sel.isCollapsed && <Medinition sel={sel} />}
       <p className="text-3xl mb-5 font-bold">
         Colds vs. allergies: How to tell the difference
       </p>
