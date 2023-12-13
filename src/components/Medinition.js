@@ -36,8 +36,6 @@ export default function Medinition(props) {
   // });
 
   function checkSel(sel) {
-    console.log(response);
-
     //sim a request from openai
     const later = (delay, value) =>
       new Promise((resolve) => setTimeout(resolve, delay, value));
