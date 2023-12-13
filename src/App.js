@@ -1,8 +1,7 @@
 import "./index.css";
-import { useState, useEffect, useRef, useLayoutEffect } from "react";
+import { useState, useEffect } from "react";
 import OpenAI from "openai";
 import Medinition from "./components/Medinition";
-import Highlighter from "./components/Highlighter";
 
 function App() {
   const [sel, setSel] = useState("");

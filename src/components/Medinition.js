@@ -72,7 +72,6 @@ export default function Medinition(props) {
       ).then((r) => {
         // setResponse(r["choices"]["0"]["message"]["content"]);
         setResponse(r);
-        console.log(r);
         setLoading(false);
       });
     }
@@ -94,10 +93,11 @@ export default function Medinition(props) {
         bottom: `${y}px`,
         right: `${x}px`,
         overflowY: "auto",
-        width: "max(200, 33vw)",
+        width: "33vw",
+        minWidth: "300px",
         userSelect: "none",
       }}
-      className={`fadeIn z-40 md:w-[400px] rounded-2xl items-center flex-col text-center content-center bg-black p-[15px] m-0`}
+      className={`fadeIn z-40 rounded-2xl items-center flex-col text-center content-center bg-black p-[15px] m-0`}
     >
       {response.trim() !== "N/A" && !loading ? (
         <a
